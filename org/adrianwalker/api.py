@@ -1,4 +1,5 @@
 import json
+import uuid
 
 import requests
 
@@ -14,7 +15,7 @@ class PersonController(object):
         if response.status_code != 201:
             raise Exception(response.status_code, response.json()['error'])
 
-        return response.json()['id']
+        return uuid.UUID(response.json()['id'])
 
 
 class Person(object):
