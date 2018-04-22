@@ -13,9 +13,15 @@ class PersonController(object):
     def save(self, person):
         response = requests.post(self.url, data=json.dumps(person, default=lambda x: x.__dict__))
         if response.status_code != 201:
-            raise Exception(response.status_code, response.json()['error'])
+            raise ControllerSaveException(response.status_code, response.json()['error'])
 
         return uuid.UUID(response.json()['id'])
+
+
+class ControllerSaveException(Exception):
+
+    def __init__(self, *args, **kwargs):
+        super(ControllerSaveException, self).__init__(*args, **kwargs)
 
 
 class Person(object):
