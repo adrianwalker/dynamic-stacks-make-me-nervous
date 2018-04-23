@@ -11,7 +11,8 @@ class PersonController(object):
         self.url = self.URL % (host, port)
 
     def save(self, person):
-        response = requests.post(self.url, data=json.dumps(person, default=lambda x: x.__dict__))
+        data = person if isinstance(person, dict) else person.__dict__
+        response = requests.post(self.url, data=json.dumps(data))
         if response.status_code != 201:
             raise ControllerSaveException(response.status_code, response.json()['error'])
 
